@@ -60,9 +60,11 @@ class LoginWindow(Screen):
         self.password.text = ""
 
 
+
 class MainWindow(Screen):
     login = ObjectProperty(None)
     created = ObjectProperty(None)
+    grid = ObjectProperty(None)
     current = ""
 
     def logOut(self):
@@ -74,20 +76,25 @@ class MainWindow(Screen):
         name, created = db.get_user(self.current)
         self.login.text = "Имя учетной записи: " + name
         self.created.text = "Создано: " + created
+        i = 1
         for n in names:
             self.but = Button(text=n,
                               size_hint=(0.5, 0.5),
                               pos_hint={'center_x': 0.5, 'center_y': 0.5},
-                              #font_size=(self.grid.width ** 2 + self.grid.height ** 2) / 10 ** 4,
-                              font_size='16dp',
+                              font_size=(self.grid.width ** 2 + self.grid.height ** 2) / 10 ** 4,
+                              #font_size='16sp',
                               on_press=self.open_webbrowser)
             self.buttons.append(self.but)
             self.grid.add_widget(self.but)
+            i += 1
 
     def open_webbrowser(self, instance):
         import webbrowser
         url = 'https://igis.ru/online' + instance.text
         webbrowser.open(url)
+
+    def clearGrid(self):
+        self.buttons.clear()
 
 
 class WindowManager(ScreenManager):

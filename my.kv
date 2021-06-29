@@ -111,7 +111,6 @@
                 root.manager.transition.direction = "right"
                 root.createBtn()
 
-
 <MainWindow>:
     name: "pars"
     grid: grid
@@ -119,13 +118,20 @@
     created:created
     FloatLayout:
         BoxLayout:
+            spacing: 20
             orientation: "vertical"
-            padding: 10, 10
+            Label:
+                id: login
+                font_size: (root.width**2 + root.height**2) / 12**4
+                pos_hint:{"x": 0.1, "top":0.9}
+                size_hint:0.8, 0.2
+            Label:
+                id: created
+                font_size: (root.width**2 + root.height**2) / 12**4
+                pos_hint:{"x": 0.1, "top":0.8}
+                size_hint:0.8, 0.2
             ScrollView:
-
                 GridLayout:
-                    margin_hint: 10, 10
-
                     id: grid
                     size_hint_y: None
                     cols: 1
@@ -134,22 +140,14 @@
                     spacing: 10
                     row_force_default: True
                     row_default_height: 40
-                    Label:
-                        id: login
-                        font_size: (root.width**2 + root.height**2) / 12**4
-                        pos_hint:{"x": 0.1, "top":0.9}
-                        size_hint:0.8, 0.2
-                    Label:
-                        id: created
-                        font_size: (root.width**2 + root.height**2) / 12**4
-                        pos_hint:{"x": 0.1, "top":0.8}
-                        size_hint:0.8, 0.2
+
             Button:
                 pos_hint:{"x":0.2,"y":0.05}
-                size_hint: 0.6, 0.1
+                size_hint: 0.6, 0.2
                 font_size: (root.width**2 + root.height**2) / 12**4
                 text:"Выйти из системы"
                 halign: 'center'
                 on_release:
+                    root.clearGrid()
                     app.root.current = "login"
                     root.manager.transition.direction = "down"
