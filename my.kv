@@ -1,0 +1,155 @@
+
+
+<CreateAccountWindow>:
+    name: "create"
+    polis: polis
+    password: passw
+    FloatLayout:
+        cols:1
+        FloatLayout:
+            size: root.width, root.height/2
+            Label:
+                text: "Создать учетную запись"
+                size_hint: 0.8, 0.2
+                pos_hint: {"x":0.1, "top":1}
+                font_size: (root.width**2 + root.height**2) / 12**4
+            Label:
+                size_hint: 0.5,0.12
+                pos_hint: {"x":0, "top":0.81}
+                text: "Логин: "
+                font_size: (root.width**2 + root.height**2) / 12**4
+            TextInput:
+                pos_hint:{"x":0.5, "top":0.8}
+                size_hint:0.4, 0.10
+                id: polis
+                multiline: False
+                font_size: (root.width**2 + root.height**2) / 12**4
+            Label:
+                size_hint: 0.5,0.12
+                pos_hint: {"x":0, "top":0.81-0.1*2}
+                text: "Пароль: "
+                font_size: (root.width**2 + root.height**2) / 12**4
+            TextInput:
+                pos_hint: {"x":0.5, "top":0.8-0.1*2}
+                size_hint: 0.4, 0.10
+                id: passw
+                multiline: False
+                password: True
+                font_size: (root.width**2 + root.height**2) / 12**4
+        Button:
+            pos_hint:{"x":0.3,"y":0.2}
+            size_hint: 0.4, 0.1
+            font_size: (root.width**2 + root.height**2) / 14**4
+            text: "У вас уже есть аккаунт?\nАвторизоваться"
+            halign: 'center'
+            on_release:
+                root.manager.transition.direction = "left"
+                root.loginRes()
+        Button:
+            pos_hint:{"x":0.2,"y":0.05}
+            size_hint: 0.6, 0.1
+            text: "Создать"
+            font_size: (root.width**2 + root.height**2) / 12**4
+            halign: 'center'
+            on_release:
+                root.manager.transition.direction = "left"
+                root.submit()
+
+
+<LoginWindow>:
+    name: "login"
+    login: login
+    password: password
+    FloatLayout:
+        Image:
+            source: 'images/logo.png'
+            size_hint: 0.5, 1
+            size: dp(350), dp(350)
+            pos_hint: {'center_x': 0.5}
+        Label:
+            text:"Логин: "
+            font_size: (root.width**2 + root.height**2) / 12**4
+            pos_hint: {"x":0.1, "top":0.93}
+            size_hint: 0.35, 0.15
+            valign: 'top'
+        TextInput:
+            id: login
+            font_size: (root.width**2 + root.height**2) / 12**4
+            multiline: False
+            focus: True
+            pos_hint: {"x": 0.45 , "top":0.90}
+            size_hint: 0.4, 0.08
+        Label:
+            text:"Пароль: "
+            font_size: (root.width**2 + root.height**2) / 12**4
+            pos_hint: {"x":0.1, "top":0.83}
+            size_hint: 0.35, 0.15
+        TextInput:
+            id: password
+            font_size: (root.width**2 + root.height**2) / 12**4
+            multiline: False
+            password: True
+            pos_hint: {"x": 0.45, "top":0.80}
+            size_hint: 0.4, 0.08
+        Button:
+            pos_hint:{"x":0.2,"y":0.05}
+            size_hint: 0.6, 0.1
+            font_size: (root.width**2 + root.height**2) / 12**4
+            text:"Войти"
+            halign:'center'
+            on_release:
+                root.manager.transition.direction = "up"
+                root.loginBtn()
+        Button:
+            pos_hint:{"x":0.3,"y":0.2}
+            size_hint: 0.4, 0.1
+            height: 20
+            font_size: (root.width**2 + root.height**2) / 14**4
+            text:"У вас нет учетной записи?\nСоздать сейчас"
+            halign:'center'
+            on_release:
+                root.manager.transition.direction = "right"
+                root.createBtn()
+
+
+<MainWindow>:
+    name: "pars"
+    grid: grid
+    login: login
+    created:created
+    FloatLayout:
+        BoxLayout:
+            orientation: "vertical"
+            padding: 10, 10
+            ScrollView:
+
+                GridLayout:
+                    margin_hint: 10, 10
+
+                    id: grid
+                    size_hint_y: None
+                    cols: 1
+                    height: self.minimum_height
+                    padding: 10
+                    spacing: 10
+                    row_force_default: True
+                    row_default_height: 40
+                    Label:
+                        id: login
+                        font_size: (root.width**2 + root.height**2) / 12**4
+                        pos_hint:{"x": 0.1, "top":0.9}
+                        size_hint:0.8, 0.2
+                    Label:
+                        id: created
+                        font_size: (root.width**2 + root.height**2) / 12**4
+                        pos_hint:{"x": 0.1, "top":0.8}
+                        size_hint:0.8, 0.2
+            Button:
+                pos_hint:{"x":0.2,"y":0.05}
+                size_hint: 0.6, 0.1
+                font_size: (root.width**2 + root.height**2) / 12**4
+                text:"Выйти из системы"
+                halign: 'center'
+                on_release:
+                    app.root.current = "login"
+                    root.manager.transition.direction = "down"
