@@ -43,8 +43,8 @@ def budget_institutions(number):  # парсинг бюджетных
         itemName = quote.find_next('a').text.strip()
         quote_href = 'https://igis.ru/online' + quote.find_next('a', href=True).get('href')
         budget_slovar[itemName] = quote_href
-    with open('BUDGET_INSTITUTIONS.json', 'w') as file:
-        json.dump(budget_slovar, file, indent=4, ensure_ascii=False)
+    # with open('BUDGET_INSTITUTIONS.json', 'w') as file:
+    #     json.dump(budget_slovar, file, indent=4, ensure_ascii=False)
     return budget_slovar
 
 
@@ -83,8 +83,8 @@ def f_specialists(number):  # парсинг номерков
         if not spisok_fio[i]:
             spisok_fio[i].append('Номерков нет')
     special_slovar = dict(zip(key, spisok_fio))
-    with open('MAKE_AN_APPOINTMENT.json', 'w') as file:
-        json.dump(special_slovar, file, indent=4, ensure_ascii=False)
+    # with open('MAKE_AN_APPOINTMENT.json', 'w') as file:
+    #     json.dump(special_slovar, file, indent=4, ensure_ascii=False)
     return key, spisok_fio
 
 

@@ -1,7 +1,6 @@
-
-
+#:import Button kivy.uix.button.Button
 <CreateAccountWindow>:
-    name: "create"
+    name: "CREATE"
     polis: polis
     password: passw
     FloatLayout:
@@ -55,9 +54,8 @@
                 root.manager.transition.direction = "left"
                 root.submit()
 
-
 <LoginWindow>:
-    name: "login"
+    name: "LOGIN"
     login: login
     password: password
     FloatLayout:
@@ -111,8 +109,41 @@
                 root.manager.transition.direction = "right"
                 root.createBtn()
 
+<ToWindow>:
+    name: "TOPARS"
+    grid: grid
+    FloatLayout:
+        BoxLayout:
+            spacing: 20
+            orientation: "vertical"
+            ScrollView:
+                GridLayout:
+                    id: grid
+                    size_hint_y: None
+                    cols: 1
+                    padding: 10
+                    spacing: 10
+                    row_force_default: True
+                    row_default_height: 40
+                    on_parent:
+                        for n, elem in enumerate(root.names): self.add_widget(Button(
+                        id=str(n),
+                        text=elem,
+                        pos_hint={'center_x': 0.5, 'center_y': 0.5},
+                        size_hint=(0.5, 0.5),
+                        on_release=root.on_pressed))
+            Button:
+                pos_hint:{"x":0.2,"y":0.05}
+                size_hint: 0.6, 0.2
+                font_size: (root.width**2 + root.height**2) / 12**4
+                text:"Выйти из системы"
+                halign: 'center'
+                on_release:
+                    app.root.current = "LOGIN"
+                    root.manager.transition.direction = "down"
+
 <MainWindow>:
-    name: "pars"
+    name: "PARS"
     grid: grid
     login: login
     created:created
@@ -135,12 +166,17 @@
                     id: grid
                     size_hint_y: None
                     cols: 1
-                    height: self.minimum_height
                     padding: 10
                     spacing: 10
                     row_force_default: True
                     row_default_height: 40
-
+                    on_parent:
+                        for n, elem in enumerate(root.names): self.add_widget(Button(
+                        id=str(n),
+                        text=elem,
+                        pos_hint={'center_x': 0.5, 'center_y': 0.5},
+                        size_hint=(0.5, 0.5),
+                        on_release=root.on_pressed))
             Button:
                 pos_hint:{"x":0.2,"y":0.05}
                 size_hint: 0.6, 0.2
@@ -148,6 +184,6 @@
                 text:"Выйти из системы"
                 halign: 'center'
                 on_release:
-                    root.clearGrid()
                     app.root.current = "login"
                     root.manager.transition.direction = "down"
+

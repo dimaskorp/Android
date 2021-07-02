@@ -7,7 +7,9 @@ from kivy.uix.label import Label
 from database import DataBase
 from kivy.config import Config
 from kivy.uix.button import Button
-from parsing import f_departments
+from parsing import f_departments, budget_institutions
+
+
 
 
 Config.set('graphics', 'width', 400)
@@ -39,6 +41,7 @@ class CreateAccountWindow(Screen):
         self.polis.text = ""
 
 
+
 class LoginWindow(Screen):
     login = ObjectProperty(None)
     password = ObjectProperty(None)
@@ -52,49 +55,52 @@ class LoginWindow(Screen):
             invalidLogin()
 
     def createBtn(self):
+
         self.reset()
-        sm.current = "create"
+        sm.current = "CREATE"
 
     def reset(self):
         self.login.text = ""
         self.password.text = ""
 
 
-
 class MainWindow(Screen):
     login = ObjectProperty(None)
     created = ObjectProperty(None)
     grid = ObjectProperty(None)
+    parsto = ObjectProperty(None)
     current = ""
+    names = f_departments().keys()
+
+    def on_pressed(self, index):
+        number = index.id
+        sm.current = "TOPARS"
+        return number
 
     def logOut(self):
-        sm.current = "login"
+        sm.current = "LOGIN"
 
-    def on_enter(self, *args):
-        self.buttons = []
-        names = f_departments().keys()
+    def on_enter(self):
         name, created = db.get_user(self.current)
         self.login.text = "Имя учетной записи: " + name
         self.created.text = "Создано: " + created
-        i = 1
-        for n in names:
-            self.but = Button(text=n,
-                              size_hint=(0.5, 0.5),
-                              pos_hint={'center_x': 0.5, 'center_y': 0.5},
-                              font_size=(self.grid.width ** 2 + self.grid.height ** 2) / 10 ** 4,
-                              #font_size='16sp',
-                              on_press=self.open_webbrowser)
-            self.buttons.append(self.but)
-            self.grid.add_widget(self.but)
-            i += 1
 
-    def open_webbrowser(self, instance):
-        import webbrowser
-        url = 'https://igis.ru/online' + instance.text
-        webbrowser.open(url)
 
-    def clearGrid(self):
-        self.buttons.clear()
+class ToWindow(Screen):
+    number = MainWindow.on_pressed
+    grid = ObjectProperty(None)
+    current = ""
+    parsto = ObjectProperty(None)
+    names = budget_institutions(2).keys()
+
+    def logOut(self):
+        sm.current = "TOPARS"
+
+    def on_pressed(self, index):
+        number = index.id
+        sm.current = "login"
+        return number
+
 
 
 class WindowManager(ScreenManager):
@@ -121,11 +127,11 @@ kv = Builder.load_file("my.kv", encoding='utf8')
 sm = WindowManager()
 db = DataBase("users.txt")
 
-screens = [LoginWindow(name="login"), CreateAccountWindow(name="create"), MainWindow(name="main")]
+screens = [LoginWindow(name="LOGIN"), CreateAccountWindow(name="CREATE"), MainWindow(name="main"), ToWindow(name="TOPARS")]
 for screen in screens:
     sm.add_widget(screen)
 
-sm.current = "login"
+sm.current = "LOGIN"
 
 
 class MyMainApp(App):
